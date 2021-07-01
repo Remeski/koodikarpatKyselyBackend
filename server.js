@@ -58,7 +58,7 @@ app.post('/quiz', (req, res) => {
     name: quiz.name,
     questions: quiz.questions.map(question => ({
       name: question.name,
-      questionList: question.questionList,
+      answersList: question.answersList,
       correctAnswer: question.correctAnswer,
     })),
   })
