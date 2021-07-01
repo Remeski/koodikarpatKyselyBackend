@@ -52,11 +52,11 @@ app.get('/quiz/:name', (req, res) => {
 
 // POST /quiz - create a quiz
 app.post('/quiz', (req, res) => {
-  const { quiz } = req.body
+  const { name, questions } = req.body
 
   const quizModel = new Quiz({
-    name: quiz.name,
-    questions: quiz.questions.map(question => ({
+    name,
+    questions: questions.map(question => ({
       name: question.name,
       answersList: question.answersList,
       correctAnswer: question.correctAnswer,
@@ -75,6 +75,7 @@ app.post('/quiz', (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(400).json({ error: err.message })
       }
+      console.log(err)
       res.status(500).json({ error: 'Internal server error' })
     })
 })
