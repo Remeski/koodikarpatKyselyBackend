@@ -56,11 +56,7 @@ app.post('/quiz', (req, res) => {
 
   const quizModel = new Quiz({
     name,
-    questions: questions.map(question => ({
-      name: question.name,
-      answersList: question.answersList,
-      correctAnswer: question.correctAnswer,
-    })),
+    questions,
   })
 
   quizModel

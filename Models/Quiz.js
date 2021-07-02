@@ -20,24 +20,20 @@ Quizes: [
 ]
 */
 
+function arrayLimit(val) {
+  return val.length > 0
+}
+
 const questionSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
-  answersList: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
-  correctAnswer: { type: Number, required: true },
-})
-
-questionSchema.set('toJSON', {
-  transform: (doc, obj) => {
-    delete obj._id
+  answersList: {
+    type: [String],
+    validate: [arrayLimit, '{PATH} must have one item'],
   },
+  correctAnswer: { type: Number, required: true },
 })
 
 const quizSchema = new mongoose.Schema(
@@ -47,7 +43,10 @@ const quizSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    questions: [questionSchema],
+    questions: {
+      type: [questionSchema],
+      validate: [arrayLimit, '{PATH} must have one item'],
+    },
   },
   { collection: 'Quizzes' }
 )
@@ -57,6 +56,12 @@ quizSchema.set('toJSON', {
     obj.id = obj._id.toString()
     delete obj._id
     delete obj.__v
+  },
+})
+
+questionSchema.set('toJSON', {
+  transform: (doc, obj) => {
+    delete obj._id
   },
 })
 
